@@ -331,7 +331,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         # compute output
         if args.use_ssc:
             output, reconst = model(images)
-            loss = criterion(output, target) + model.ssc_module.loss(images, reconst)
+            loss = criterion(output, target) + reconstruction_loss(images, reconst)
         else:
             output = model(images)
             loss = criterion(output, target)
@@ -498,6 +498,10 @@ class DistributedWeightedSampler(torch.utils.data.DistributedSampler):
 
         return iter(indices)
 
+
+
+def reconstruction_loss(input, reconst):
+    return torch.nn.functional.mse_loss(input, reconst)
 
 if __name__ == '__main__':
     main()

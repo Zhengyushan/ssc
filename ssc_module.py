@@ -93,7 +93,3 @@ class StainStdCapsule(nn.Module):
         sparsity = sparsity.mean(dim=2, keepdim=True)
 
         return sparsity
-
-
-    def loss(self, input, reconst):
-        return torch.nn.functional.mse_loss(input, reconst)/self.group_num
