@@ -8,18 +8,17 @@ import torchvision.transforms as transforms
 
 
 class PatchDataset(torch.utils.data.Dataset):
-    def __init__(self, file_path, transform, label_type=1):
+    def __init__(self, file_path, transform):
         self.transform = transform
         with open(file_path, 'rb') as f:
             data = pickle.load(f)
 
         self.data_dir = data['base_dir']
         self.image_list = data['list']
-        self.lt = label_type
         
     def __getitem__(self, index):
         img_path = os.path.join(self.data_dir, self.image_list[index][0])
-        label = self.image_list[index][self.lt]
+        label = self.image_list[index][1]
         img = Image.open(img_path).convert('RGB')
 
         if self.transform!=None:
@@ -33,8 +32,8 @@ class PatchDataset(torch.utils.data.Dataset):
     def get_weights(self):
         num = self.__len__()
         labels = np.zeros((num,), np.int)
-        for s_ind, s in enumerate(self.image_list):
-            labels[s_ind] = s[self.lt]
+        for s_ind, sample in enumerate(self.image_list):
+            labels[s_ind] = sample[1]
         tmp = np.bincount(labels)
         weights = 1.0 / np.asarray(tmp[labels], np.float)
 

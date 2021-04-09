@@ -263,7 +263,7 @@ def main_worker(gpu, ngpus_per_node, args):
             args.num_groups, 
             args.group_width
         )
-    save_dir = os.path.join('data', prefix)
+    save_dir = os.path.join('result', prefix)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 

@@ -50,7 +50,7 @@ class StainStdCapsule(nn.Module):
         output = torch.sum(x * c, dim=1)
         re_image = self.reconstruction(output)
         re_image = torch.exp(-re_image)
-        
+
         return output, re_image
 
 
